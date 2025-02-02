@@ -1,6 +1,6 @@
 ## Projecto Biomas
 ## Creacion y division de biomas
-## Creado por SImon Rozenstock 01-11-2024
+## Creado por SImon Rozenstock 01-11-2024 
 
 class Plantas:
     count = 0
