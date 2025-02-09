@@ -18,4 +18,4 @@ class Moto(Vehiculo):
         self.estilo = estilo
     
     def estado(self):
-        return ""
+        return f"[Moto] Placa: {self.placa}, Marca: {self.marca}, Modelo: {self.modelo}, Combustible: {self.combustible}, Estilo: {self.estilo}"
