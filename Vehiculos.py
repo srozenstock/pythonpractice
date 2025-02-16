@@ -19,3 +19,53 @@ class Moto(Vehiculo):
     
     def estado(self):
         return f"[Moto] Placa: {self.placa}, Marca: {self.marca}, Modelo: {self.modelo}, Combustible: {self.combustible}, Estilo: {self.estilo}"
+    
+class Camion(Vehiculo):
+    def __init__(self, placa, marca, modelo, combustible, carga):
+        super().__init__(placa, marca, modelo, combustible)
+        self.carga = carga
+
+    def estado(self):
+        return f"[Camion] Placa: {self.placa}, Marca: {self.marca}, Modelo: {self.modelo}, Combustible: {self.combustible}, Carga: {self.carga}"
+    
+class Flota:
+    def __init__(self):
+        self.flotilla = []
+        
+    def agregar_vehiculo(self, n):
+        if isinstance(n,Vehiculo):
+            self.flotilla.append(n)
+        else:
+            print("Solo se puede agregar un vehiculo")
+
+    def mostrar_vehiculos(self):
+        if len(self.flotilla) > 0:
+            for n in self.flotilla:
+                print(n.estado())
+        else:
+            print("No hay vehiculos en la lista")
+
+    def guardar_flota(self, archivo):
+        flota_data = []
+        for n in self.flotilla:
+            vehiculo_info = {
+                "Placa":n.placa,
+                "Marca":n.marca,
+                "Modelo":n.modelo,
+                "Combustible":n.combustible
+            
+            }
+            if isinstance(n,Moto):
+                vehiculo_info ["Tipo"] = "Moto"
+                vehiculo_info ["Estilo"] = n.estilo
+            
+            elif isinstance(n,Camion):
+                vehiculo_info ["Tipo"] = "Camion"
+                vehiculo_info ["Carga"] = n.carga
+
+            flota_data.append(vehiculo_info)
+
+        with open(archivo, "w") as file:
+            json.dump(flota_data, file, indent=4)
+
+        print("Informacion Guardada")
