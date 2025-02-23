@@ -69,3 +69,20 @@ class Flota:
             json.dump(flota_data, file, indent=4)
 
         print("Informacion Guardada")
+
+        def cargar_flota(self,archivo):
+            try:
+                with open(archivo, "r") as file:
+                    flota_data = json.load(file)
+                    for vehiculo_data in flota_data:
+                        if vehiculo_data["Tipo"] == "Moto":
+                            vehiculo = Moto(vehiculo_data["Placa"],vehiculo_data["Marca"],vehiculo_data["Modelo"], vehiculo_data["Combustible"],vehiculo_data["Estilo"])
+                        elif vehiculo_data["Tipo"] == "Camion":
+                            vehiculo = Camion(vehiculo_data["Placa"],vehiculo_data["Marca"],vehiculo_data["Modelo"], vehiculo_data["Combustible"],vehiculo_data["Carga"])
+                        self.agregar_vehiculo(vehiculo)
+            except FileNotFoundError:
+                print(f"El Archivo {archivo} No Existe")
+            except json.JSONDecodeError:
+                print(f"EL Archivo {archivo} Esta En Formato Invalido")
+            except:
+                print(f"Ocurrio Un Error Al Intentar Abrir El Archivo {archivo}")
