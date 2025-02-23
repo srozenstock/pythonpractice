@@ -70,19 +70,44 @@ class Flota:
 
         print("Informacion Guardada")
 
-        def cargar_flota(self,archivo):
-            try:
-                with open(archivo, "r") as file:
-                    flota_data = json.load(file)
-                    for vehiculo_data in flota_data:
-                        if vehiculo_data["Tipo"] == "Moto":
-                            vehiculo = Moto(vehiculo_data["Placa"],vehiculo_data["Marca"],vehiculo_data["Modelo"], vehiculo_data["Combustible"],vehiculo_data["Estilo"])
-                        elif vehiculo_data["Tipo"] == "Camion":
-                            vehiculo = Camion(vehiculo_data["Placa"],vehiculo_data["Marca"],vehiculo_data["Modelo"], vehiculo_data["Combustible"],vehiculo_data["Carga"])
-                        self.agregar_vehiculo(vehiculo)
-            except FileNotFoundError:
-                print(f"El Archivo {archivo} No Existe")
-            except json.JSONDecodeError:
-                print(f"EL Archivo {archivo} Esta En Formato Invalido")
-            except:
-                print(f"Ocurrio Un Error Al Intentar Abrir El Archivo {archivo}")
+    def cargar_flota(self,archivo):
+        try:
+            with open(archivo, "r") as file:
+                flota_data = json.load(file)
+                for vehiculo_data in flota_data:
+                    if vehiculo_data["Tipo"] == "Moto":
+                        vehiculo = Moto(vehiculo_data["Placa"],vehiculo_data["Marca"],vehiculo_data["Modelo"], vehiculo_data["Combustible"],vehiculo_data["Estilo"])
+                    elif vehiculo_data["Tipo"] == "Camion":
+                        vehiculo = Camion(vehiculo_data["Placa"],vehiculo_data["Marca"],vehiculo_data["Modelo"], vehiculo_data["Combustible"],vehiculo_data["Carga"])
+                    self.agregar_vehiculo(vehiculo)
+        except FileNotFoundError:
+            print(f"El Archivo {archivo} No Existe")
+        except json.JSONDecodeError:
+            print(f"EL Archivo {archivo} Esta En Formato Invalido")
+        except:
+            print(f"Ocurrio Un Error Al Intentar Abrir El Archivo {archivo}")
+
+## Start main test
+
+flota_1 = Flota()
+
+camion_1 = Camion("1234","Toyota","Camion","diesel","10 Tonnes")
+
+moto_1 = Moto("4321","Harley","Vrod","Gas","Low_rider")
+
+flota_1.agregar_vehiculo(camion_1)
+flota_1.agregar_vehiculo(moto_1)
+
+flota_1.mostrar_vehiculos()
+
+flota_1.guardar_flota("Flotilla_Principal.json")
+
+flota_2 = Flota()
+
+flota_2.cargar_flota("Flotilla_Principal.json")
+
+print("")
+print("Flota 2")
+print("")
+
+flota_2.mostrar_vehiculos()

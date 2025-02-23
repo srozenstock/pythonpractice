@@ -1,0 +1,18 @@
+[
+    {
+        "Placa": "1234",
+        "Marca": "Toyota",
+        "Modelo": "Camion",
+        "Combustible": "diesel",
+        "Tipo": "Camion",
+        "Carga": "10 Tonnes"
+    },
+    {
+        "Placa": "4321",
+        "Marca": "Harley",
+        "Modelo": "Vrod",
+        "Combustible": "Gas",
+        "Tipo": "Moto",
+        "Estilo": "Low_rider"
+    }
+]
