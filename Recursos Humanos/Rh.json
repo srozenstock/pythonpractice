@@ -1,0 +1,27 @@
+[
+    {
+        "Nombre": "Ramon",
+        "Posicion": "QA",
+        "Salario": 15,
+        "ID": "100003",
+        "Tipo": "Tech",
+        "Lenguage": "Python"
+    },
+    {
+        "Nombre": "Carlos",
+        "Posicion": "ventas",
+        "Salario": 20,
+        "ID": "100004",
+        "Tipo": "Finanzas",
+        "Ventas": 20,
+        "Comision": 0.5
+    },
+    {
+        "Nombre": "Luis",
+        "Posicion": "CMO",
+        "Salario": 13,
+        "ID": "100006",
+        "Tipo": "Mercadeo",
+        "Red": "B2B"
+    }
+]
