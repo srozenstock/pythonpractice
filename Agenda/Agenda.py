@@ -54,7 +54,10 @@ class Contacto():
         else:
             self.__pais = value
 
-    
+    def __str__(self):
+        return(f"Nombre: {self._nombre}, Telefono: {self._telefono}, Correo: {self._correo}, Pais: {self._pais}")
+
+
 
 def guardar_contacto(contacto,archivo):
     with open(archivo,mode="w",newline="",encoding="utf-8") as file:
@@ -67,12 +70,12 @@ def cargar_contacto(archivo):
     contactos = []
     try: 
         with open(archivo,mode="r",encoding="utf-8") as file:
-            reader = csv.DictWriter(file)
+            reader = csv.DictReader(file)
             for r in reader:
                 contacto = Contacto(r["Nombre"],r["Telefono"],r["Correo"],r["Pais"])
                 contactos.append(contacto)
     except FileNotFoundError:
-        print("El archivo: {archivo} no fue encontrado")
+        print(f"El archivo: {archivo} no fue encontrado")
     return contactos
 
 def agregar_contacto(contactos):
@@ -88,16 +91,48 @@ def agregar_contacto(contactos):
 def mostrar_contacto(contactos):
     if len(contactos) > 0:
         for idx, contacto in enumerate(contactos, 1):
-            print(f"{idx}. {contacto._nombre}")
+            print(f"{idx}. {contacto}")
     else:
         print("Agenda Vacia")
+    print("")
 
-#Prueba
+def buscar_contacto(contactos):
+    x = input("Cual es el nombre del contacto que le gustaria buscar?").lower()
+    encontrados = [c for c in contactos if x in c._nombre.lower()]
+    if encontrados:
+        for n in encontrados:
+            print(n)
+    else:
+        print("No se encontraron contactos con ese nombre")
 
-nuevo = []
-agregar_contacto(nuevo)
-agregar_contacto(nuevo)
-mostrar_contacto(nuevo)
+def menu():
+    archivo = "Agenda.csv"
+    lista = cargar_contacto(archivo)
+    while True:
+        print("""1- Agregar Contacto
+2- Mostrar Lista
+3- Buscar Contacto
+4- Guardar y Salir
+            """)
+        opcion = int(input("Cual opcion le gustaria escoger? " ))
+        if opcion == 1:
+            agregar_contacto(lista)
+        elif opcion == 2:
+            mostrar_contacto(lista)
+        elif opcion == 3:
+            buscar_contacto(lista)
+        elif opcion == 4:
+            guardar_contacto(lista,archivo)
+            print("Guardado con exito")
+            print("Adios")
+            break
+        else:
+            print("Opcion Invalida")
+
+
+menu()
+
+
         
     
 
