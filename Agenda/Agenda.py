@@ -1,7 +1,10 @@
 # Abril 27 2025
 # Registro de contactos guardado en archivos CSV
 
-import csv 
+import csv
+import re
+import shutil
+from datetime import datetime
 
 class Contacto():
     def __init__(self,nombre,telefono,correo,pais):
@@ -60,6 +63,7 @@ class Contacto():
 
 
 def guardar_contacto(contacto,archivo):
+    backup_archivo(archivo)
     with open(archivo,mode="w",newline="",encoding="utf-8") as file:
         writer = csv.writer(file)
         writer.writerow(["Nombre","Telefono","Correo","Pais"])
@@ -77,6 +81,15 @@ def cargar_contacto(archivo):
     except FileNotFoundError:
         print(f"El archivo: {archivo} no fue encontrado")
     return contactos
+
+def backup_archivo(archivo):
+    try:
+        if archivo:
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            shutil.copy(archivo,f"{archivo}_{timestamp}.bak")
+            print(f"Backup Creado ({archivo}_{timestamp}.bak)")
+    except Exception as e:
+        print(f"Error al crear el respaldo {e}")
 
 def agregar_contacto(contactos):
     print("Informacion del contacto")
