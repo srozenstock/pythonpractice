@@ -105,6 +105,38 @@ def buscar_contacto(contactos):
     else:
         print("No se encontraron contactos con ese nombre")
 
+def editar_contacto(contactos):
+    mostrar_contacto(contactos)
+    try:
+        opcion = int(input("Digite el numero correspondiente del contacto que le gustaria editar: "))-1
+        if 0 <= opcion <= len(contactos):
+            contacto = contactos[opcion]
+            nuevo_nombre = input(f"Nuevo nombre: (Enter para mantener {contacto._nombre}) ") or contacto._nombre
+            contacto._nombre = nuevo_nombre
+            nuevo_telefono = input(f"Nuevo telefono: (Enter para mantener {contacto._telefono}) ") or contacto._telefono
+            contacto._telefono = nuevo_telefono
+            nuevo_correo = input(f"Nuevo correo: (Enter para mantener {contacto._correo}) ") or contacto._correo
+            contacto._correo = nuevo_correo
+            nuevo_pais = input(f"Nuevo pais: (Enter para mantener {contacto._pais}) ") or contacto._pais
+            contacto._pais = nuevo_pais
+        else:
+            print("Error: Valor no dentro de las opciones")
+    except ValueError:
+        print("Entrada Invalida")
+
+def eliminar_contacto(contactos):
+    mostrar_contacto(contactos)
+    try:
+        opcion = int(input("Digite el numero correspondiente del contacto que le gustaria borrar: "))-1
+        if 0 <= opcion <= len(contactos):
+            contact = contactos.pop(opcion)
+            print(f"El contacto {contact} fue eliminado")
+        else:
+            print("Error: Valor no dentro de las opciones")
+    except ValueError:
+        print ("Entrada Invalida")
+
+
 def menu():
     archivo = "Agenda.csv"
     lista = cargar_contacto(archivo)
@@ -112,7 +144,9 @@ def menu():
         print("""1- Agregar Contacto
 2- Mostrar Lista
 3- Buscar Contacto
-4- Guardar y Salir
+4- Editar Contacto
+5- Borrar Contacto
+6- Guardar y Salir
             """)
         opcion = int(input("Cual opcion le gustaria escoger? " ))
         if opcion == 1:
@@ -122,6 +156,10 @@ def menu():
         elif opcion == 3:
             buscar_contacto(lista)
         elif opcion == 4:
+            editar_contacto(lista)
+        elif opcion == 5:
+            eliminar_contacto(lista)
+        elif opcion == 6:
             guardar_contacto(lista,archivo)
             print("Guardado con exito")
             print("Adios")
