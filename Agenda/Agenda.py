@@ -5,6 +5,10 @@ import csv
 import re
 import shutil
 from datetime import datetime
+from rich.console import Console
+from rich.table import Table
+from rich.prompt import Prompt, IntPrompt, Confirm
+console = Console()
 
 class Contacto():
     def __init__(self,nombre,telefono,correo,pais):
@@ -95,7 +99,13 @@ def agregar_contacto(contactos):
     print("Informacion del contacto")
     nombre = input("Nombre: ")
     telefono = input("Telefono: ")
+    if not validar_telefono(telefono):
+        print("formato no aceptado, volviendo a menu inicial")
+        return
     correo = input("Correo: ")
+    if not validar_email(correo):
+        print("formato no aceptado, volviendo a menu inicial")
+        return
     pais = input("Pais: ")
 
     contacto = Contacto(nombre,telefono,correo,pais)
@@ -127,9 +137,15 @@ def editar_contacto(contactos):
             nuevo_nombre = input(f"Nuevo nombre: (Enter para mantener {contacto._nombre}) ") or contacto._nombre
             contacto._nombre = nuevo_nombre
             nuevo_telefono = input(f"Nuevo telefono: (Enter para mantener {contacto._telefono}) ") or contacto._telefono
-            contacto._telefono = nuevo_telefono
+            if validar_telefono(nuevo_telefono):
+                contacto._telefono = nuevo_telefono
+            else:
+                print("fotmato no aceptado, no se realizo el cambio")
             nuevo_correo = input(f"Nuevo correo: (Enter para mantener {contacto._correo}) ") or contacto._correo
-            contacto._correo = nuevo_correo
+            if validar_email(nuevo_correo):
+                contacto._correo = nuevo_correo
+            else:
+                print("fotmato no aceptado, no se realizo el cambio")
             nuevo_pais = input(f"Nuevo pais: (Enter para mantener {contacto._pais}) ") or contacto._pais
             contacto._pais = nuevo_pais
         else:
@@ -149,17 +165,37 @@ def eliminar_contacto(contactos):
     except ValueError:
         print ("Entrada Invalida")
 
+def validar_email(validacion):
+    patron = r'^\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+    return re.match(patron,validacion)
+
+def validar_telefono(telefono):
+    return telefono.isdigit() and 7 <= len(telefono) <= 15
+
+def ordenar(contactos):
+    print("""Ordenar por:
+1- Nombre
+2- E-Mail
+          """)
+    n = int(input("Cual opcion gustaria escoger?: "))
+    if n ==1:
+        contactos.sort(key = lambda c: c._nombre.lower())
+    elif n ==2:
+        contactos.sort(key = lambda c: c._correo.lower())
+    else:
+        print ("Opcion invalida")
 
 def menu():
     archivo = "Agenda.csv"
     lista = cargar_contacto(archivo)
     while True:
-        print("""1- Agregar Contacto
-2- Mostrar Lista
-3- Buscar Contacto
-4- Editar Contacto
-5- Borrar Contacto
-6- Guardar y Salir
+        console.print(f"""[blue]1[/blue]- Agregar Contacto
+[green]2[/green]- Mostrar Lista
+[red]3[/red]- Buscar Contacto
+[orange]4[/orange]- Editar Contacto
+[purple]5[/purple]- Borrar Contacto
+[magenta]6[/magenta]- Ordenar Lista
+[brown]7[/brown]- Guardar y Salir
             """)
         opcion = int(input("Cual opcion le gustaria escoger? " ))
         if opcion == 1:
@@ -173,6 +209,9 @@ def menu():
         elif opcion == 5:
             eliminar_contacto(lista)
         elif opcion == 6:
+            ordenar(lista)
+            mostrar_contacto(lista)
+        elif opcion == 7:
             guardar_contacto(lista,archivo)
             print("Guardado con exito")
             print("Adios")
