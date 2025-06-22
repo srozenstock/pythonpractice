@@ -93,18 +93,18 @@ def backup_archivo(archivo):
             shutil.copy(archivo,f"{archivo}_{timestamp}.bak")
             print(f"Backup Creado ({archivo}_{timestamp}.bak)")
     except Exception as e:
-        print(f"Error al crear el respaldo {e}")
+        console.print(f"[red]Error al crear el respaldo {e}[/red]")
 
 def agregar_contacto(contactos):
     print("Informacion del contacto")
     nombre = input("Nombre: ")
     telefono = input("Telefono: ")
     if not validar_telefono(telefono):
-        print("formato no aceptado, volviendo a menu inicial")
+        console.print(f"[red]formato no aceptado, volviendo a menu inicial[/red]")
         return
     correo = input("Correo: ")
     if not validar_email(correo):
-        print("formato no aceptado, volviendo a menu inicial")
+        print(f"[red]formato no aceptado, volviendo a menu inicial[/red]")
         return
     pais = input("Pais: ")
 
@@ -113,10 +113,21 @@ def agregar_contacto(contactos):
 
 def mostrar_contacto(contactos):
     if len(contactos) > 0:
+        table = Table(title="Agenda de Contactos")
+
+        table.add_column("N°", style="cyan", justify="center")
+        table.add_column("Nombre", style="magenta")
+        table.add_column("Teléfono", style="green")
+        table.add_column("Email", style="blue")
+        table.add_column("Pais", style="purple")
+
         for idx, contacto in enumerate(contactos, 1):
-            print(f"{idx}. {contacto}")
+            table.add_row(str(idx), contacto._nombre, contacto._telefono, contacto._correo, contacto._pais)
+
+        console.print(table)
+            
     else:
-        print("Agenda Vacia")
+        console.print(f"[red]Agenda Vacia[/red]")
     print("")
 
 def buscar_contacto(contactos):
